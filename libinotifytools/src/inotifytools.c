@@ -1193,9 +1193,15 @@ struct inotify_event * inotifytools_next_events( int timeout, int num_events ) {
 		error = errno;
 		return NULL;
 	}
+	//printf("bytes: %u -- event: %u, &event[0]: %u, before %u\n", bytes, event, &event[0], &event[0]+bytes);
 
 	this_bytes = read(inotify_fd, &event[0] + bytes,
 	                  sizeof(struct inotify_event)*MAX_EVENTS - bytes);
+
+	//printf("bytes: %u -- event: %u, &event[0]: %u, after %u\n", bytes, event, &event[0], &event[0]+bytes);
+	//void * address = &event[0] + bytes;
+	//printf("%s\n", address + 16);
+
 	if ( this_bytes < 0 ) {
 		error = errno;
 		return NULL;
