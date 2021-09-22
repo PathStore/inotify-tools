@@ -1898,15 +1898,24 @@ int inotifytools_snprintf( char * out, int size,
 		if ( ch1 == 'T' ) {
 
 			if ( timefmt ) {
+				struct timespec spec;
+                                clock_gettime(CLOCK_REALTIME, &spec);
+                                now = spec.tv_sec;
+                                long ns = spec.tv_nsec;
 
-				now = time(0);
-				if ( 0 >= strftime( timestr, MAX_STRLEN-1, timefmt,
-				                    localtime( &now ) ) ) {
+                                //now = time(0);
+                                if ( 0 >= strftime( timestr, MAX_STRLEN-1, timefmt,
+                                                        localtime( &now ) ) ) {
 
-					// time format probably invalid
-					error = EINVAL;
-					return ind;
-				}
+                                        // time format probably invalid
+                                        error = EINVAL;
+                                        return ind;
+                                }
+
+                                char nano[10] = {};
+                                sprintf(nano, "%03d", ns/1000000);
+                                nano[3] = 0;
+                                strcat(timestr, nano);
 			}
 			else {
 				timestr[0] = 0;
