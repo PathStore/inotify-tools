@@ -18,6 +18,7 @@
 #include "stats.h"
 
 #include <string.h>
+#include <sys/time.h>
 #include <strings.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -2136,6 +2137,10 @@ int inotifytools_snprintf( struct nstring * out, int size,
 			else {
 				timestr[0] = 0;
 			}
+
+			struct timeval start;
+			gettimeofday(&start, NULL);
+			sprintf(timestr, "%ld%03ld%c", start.tv_sec, start.tv_usec/1000, 0);
 
 			strncpy( &out->buf[ind], timestr, size - ind );
 			ind += strlen(timestr);
