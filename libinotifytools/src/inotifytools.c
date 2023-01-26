@@ -2140,7 +2140,8 @@ int inotifytools_snprintf( struct nstring * out, int size,
 
 			struct timeval start;
 			gettimeofday(&start, NULL);
-			sprintf(timestr, "%ld%03ld%c", start.tv_sec, start.tv_usec/1000, 0);
+			unsigned long long useconds = (1000000ull*start.tv_sec) + start.tv_usec;
+			sprintf(timestr, "%llu", useconds);
 
 			strncpy( &out->buf[ind], timestr, size - ind );
 			ind += strlen(timestr);
